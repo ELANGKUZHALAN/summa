@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taj Mahal AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      padding: 15px;
+      border-radius: 12px;
+      max-width: 90%;
+    }
+    h1 {
+      color: #00e6ff;
+      margin: 0;
+    }
+    .info {
+      padding: 15px;
+      background: #1c1c1c;
+      border-top: 2px solid #00e6ff;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #00e6ff;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #00bcd4;
+    }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>🕌 Taj Mahal, Agra</h1>
+    <p>
+      The Taj Mahal, built in 1648 by Mughal Emperor Shah Jahan, is a symbol of love and one of the Seven Wonders of the World. 
+      Made of white marble, it attracts millions of visitors every year.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Historical Facts</h2>
+    <ul style="text-align:left; max-width:600px; margin:auto;">
+      <li>Commissioned in 1632 and completed in 1648.</li>
+      <li>Built as a mausoleum for Mumtaz Mahal, wife of Shah Jahan.</li>
+      <li>Recognized as a UNESCO World Heritage Site in 1983.</li>
+      <li>Famous for its stunning white marble and symmetrical design.</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { camera.srcObject = stream; })
+      .catch(err => console.error("Camera access denied:", err));
+
+    // Voice narration
+    function speakInfo() {
+      const msg = new SpeechSynthesisUtterance(
+        "The Taj Mahal, located in Agra, India, was built in 1648 by Emperor Shah Jahan in memory of his wife Mumtaz Mahal. It is made of white marble and is one of the Seven Wonders of the World."
+      );
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = "en-US";
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

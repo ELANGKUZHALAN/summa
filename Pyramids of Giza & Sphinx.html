@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pyramids of Giza & Sphinx AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.65);
+      padding: 16px;
+      border-radius: 12px;
+      max-width: 94%;
+    }
+    h1 {
+      color: #d9c39f; /* sandstone / desert tone */
+      margin: 0;
+    }
+    .info {
+      padding: 14px;
+      background: #171717;
+      border-top: 2px solid #d9c39f;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #d9c39f;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover { background: #c8b08a; }
+    ul { text-align: left; max-width: 760px; margin: 10px auto; padding-left: 18px; }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>🔺 Pyramids of Giza & the Great Sphinx</h1>
+    <p>
+      The Giza Plateau near Cairo holds the Great Pyramid (Khufu), two other major pyramids (Khafre and Menkaure), and the Great Sphinx — monuments of ancient Egypt’s engineering and spiritual beliefs.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Key Facts</h2>
+    <ul>
+      <li>The Great Pyramid of Khufu (Cheops) is the largest, built c. 2580–2560 BCE during Egypt’s Fourth Dynasty.</li>
+      <li>Other main pyramids: Khafre (often appears taller because of its elevated site) and Menkaure (smallest of the three major tomb pyramids).</li>
+      <li>The Great Sphinx — a limestone statue with a lion’s body and human head — is traditionally attributed to Pharaoh Khafre and dates to the same general period.</li>
+      <li>Pyramids served as monumental tombs for pharaohs and were part of larger funerary complexes with temples and causeways.</li>
+      <li>Constructed from millions of limestone and granite blocks using remarkable ancient engineering methods.</li>
+      <li>Giza is a UNESCO World Heritage Site and remains one of the most visited archaeological complexes in the world.</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => { camera.srcObject = stream; })
+        .catch(err => console.error("Camera access denied:", err));
+    } else {
+      console.error("getUserMedia not supported in this browser.");
+    }
+
+    // Voice narration
+    function speakInfo() {
+      const text = `The Pyramids of Giza and the Great Sphinx stand on the Giza Plateau near Cairo as some of the finest monuments of ancient Egypt. The Great Pyramid, built for Pharaoh Khufu around twenty six hundred BCE, is the largest; its neighbors—Khafre and Menkaure—form the classic Giza group. The Great Sphinx, carved from the bedrock with a lion's body and human head, is traditionally linked to Khafre. These structures were built as royal tombs and part of elaborate funerary complexes, constructed from millions of stone blocks and demonstrating extraordinary ancient engineering. Giza is a UNESCO World Heritage Site and attracts visitors from around the globe.`;
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = 'en-GB';
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

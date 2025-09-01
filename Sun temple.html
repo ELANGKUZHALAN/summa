@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sun Temple AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      padding: 15px;
+      border-radius: 12px;
+      max-width: 90%;
+    }
+    h1 {
+      color: #ff9933; /* Sunset orange theme */
+      margin: 0;
+    }
+    .info {
+      padding: 15px;
+      background: #1c1c1c;
+      border-top: 2px solid #ff9933;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #ff9933;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e67e22;
+    }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>🌞 Sun Temple, Konark</h1>
+    <p>
+      The Konark Sun Temple, built in the 13th century by King Narasimhadeva I, is designed as a giant stone chariot dedicated to the Sun God, Surya. 
+      It is one of India’s most magnificent architectural marvels.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Historical Facts</h2>
+    <ul style="text-align:left; max-width:600px; margin:auto;">
+      <li>Constructed in the 13th century by King Narasimhadeva I of the Eastern Ganga dynasty.</li>
+      <li>Designed as a colossal chariot with 24 carved stone wheels, pulled by 7 horses.</li>
+      <li>Dedicated to Surya, the Sun God, symbolizing time and celestial movement.</li>
+      <li>Recognized as a UNESCO World Heritage Site.</li>
+      <li>Famous for its intricate carvings and Kalinga-style architecture.</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { camera.srcObject = stream; })
+      .catch(err => console.error("Camera access denied:", err));
+
+    // Voice narration
+    function speakInfo() {
+      const msg = new SpeechSynthesisUtterance(
+        "The Konark Sun Temple, built in the thirteenth century by King Narasimhadeva the First, is dedicated to the Sun God, Surya. It is designed as a colossal stone chariot with twenty four wheels and seven horses. This UNESCO World Heritage Site is one of the finest examples of Kalinga architecture, famous for its detailed carvings and symbolic design."
+      );
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = "en-US";
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

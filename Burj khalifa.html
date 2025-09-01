@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Burj Khalifa AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.66);
+      padding: 16px;
+      border-radius: 12px;
+      max-width: 94%;
+    }
+    h1 {
+      color: #cfcfcf; /* sleek metallic theme */
+      margin: 0;
+    }
+    .info {
+      padding: 14px;
+      background: #151515;
+      border-top: 2px solid #cfcfcf;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #cfcfcf;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover { background: #bfbfbf; }
+    ul { text-align: left; max-width: 760px; margin: 10px auto; padding-left: 18px; }
+    .note { font-size: 13px; color: #bbb; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>🏙️ Burj Khalifa, Dubai</h1>
+    <p>
+      The Burj Khalifa is the tallest man-made structure in the world, a modern engineering landmark in Dubai known for its needle-like spire and mixed-use design.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Key Facts</h2>
+    <ul>
+      <li>Location: Dubai, United Arab Emirates (Downtown Dubai).</li>
+      <li>Height: 828 metres (2,717 feet) to tip — the tallest building in the world.</li>
+      <li>Construction: began in 2004; officially opened on 4 January 2010.</li>
+      <li>Architect: Adrian Smith (while at Skidmore, Owings & Merrill); structural engineering by Bill Baker (SOM).</li>
+      <li>Contains residential, hotel, office and observation decks (notably "At The Top" on levels 124/125 and a premium deck on 148).</li>
+      <li>Design inspiration: regional Islamic architecture and the Hymenocallis flower — uses a bundled-tube structural system for height and stability.</li>
+      <li>Features high-speed elevators, luxurious interiors, and spectacular night-time lighting and fountain shows at the base.</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+    <div class="note">This is a UI prototype. Real AR recognition requires AR-capable mobile apps or web AR libraries (ARKit/ARCore / WebXR).</div>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => { camera.srcObject = stream; })
+        .catch(err => console.error("Camera access denied:", err));
+    } else {
+      console.error("getUserMedia not supported in this browser.");
+    }
+
+    // Voice narration
+    function speakInfo() {
+      const text = "The Burj Khalifa in Dubai is the tallest man made structure on Earth, rising to eight hundred and twenty eight metres. Construction began in two thousand and four and it officially opened on January fourth, two thousand and ten. Designed by Adrian Smith of Skidmore Owings and Merrill with structural engineering by Bill Baker, the tower uses a bundled tube structural system inspired by regional Islamic architecture. It hosts residences, offices, hotels and observation decks such as 'At The Top' on levels one two four and one two five, and a premium deck on one four eight. The Burj Khalifa is known for its engineering innovation, high speed elevators and spectacular nighttime lighting and fountain displays at its base.";
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = 'en-US';
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lotus Temple AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.65);
+      padding: 15px;
+      border-radius: 12px;
+      max-width: 90%;
+    }
+    h1 {
+      color: #87CEEB; /* Sky blue theme for peace */
+      margin: 0;
+    }
+    .info {
+      padding: 15px;
+      background: #1c1c1c;
+      border-top: 2px solid #87CEEB;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #87CEEB;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #5caad6;
+    }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>🌸 Lotus Temple, New Delhi</h1>
+    <p>
+      The Lotus Temple, shaped like a lotus flower, is a Baháʼí House of Worship. 
+      Open to people of all religions, it represents peace, unity, and harmony.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Historical Facts</h2>
+    <ul style="text-align:left; max-width:600px; margin:auto;">
+      <li>Completed in 1986, located in New Delhi, India.</li>
+      <li>Designed by Iranian architect Fariborz Sahba.</li>
+      <li>Made of 27 free-standing marble-clad "petals."</li>
+      <li>Symbolizes purity, peace, and the universality of religion.</li>
+      <li>Has won numerous architectural awards for its unique design.</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { camera.srcObject = stream; })
+      .catch(err => console.error("Camera access denied:", err));
+
+    // Voice narration
+    function speakInfo() {
+      const msg = new SpeechSynthesisUtterance(
+        "The Lotus Temple in New Delhi, completed in 1986, is a Baháʼí House of Worship designed by architect Fariborz Sahba. Shaped like a lotus flower with twenty seven marble clad petals, it is open to all, regardless of religion or background. The temple symbolizes purity, unity, and peace, and has won many architectural awards worldwide."
+      );
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = 'en-IN';
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Machu Picchu AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.65);
+      padding: 16px;
+      border-radius: 12px;
+      max-width: 94%;
+    }
+    h1 {
+      color: #9acd32; /* earthy green */
+      margin: 0;
+    }
+    .info {
+      padding: 14px;
+      background: #1b1b1b;
+      border-top: 2px solid #9acd32;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #9acd32;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover { background: #86b82b; }
+    ul { text-align: left; max-width: 700px; margin: 10px auto; padding-left: 18px; }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>🏔️ Machu Picchu, Peru</h1>
+    <p>
+      Machu Picchu is a 15th-century Inca citadel located high in the Andes Mountains of Peru. 
+      It is one of the New Seven Wonders of the World and a UNESCO World Heritage Site.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Historical Facts</h2>
+    <ul>
+      <li>Built around 1450 under the reign of Inca emperor Pachacuti.</li>
+      <li>Located about 2,430 meters (7,970 ft) above sea level.</li>
+      <li>Abandoned during the Spanish conquest and hidden for centuries.</li>
+      <li>Rediscovered in 1911 by American explorer Hiram Bingham.</li>
+      <li>Known for its sophisticated dry-stone construction blending with natural surroundings.</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => { camera.srcObject = stream; })
+        .catch(err => console.error("Camera access denied:", err));
+    }
+
+    // Voice narration
+    function speakInfo() {
+      const text = "Machu Picchu, built in the fifteenth century by the Inca emperor Pachacuti, lies nearly two thousand four hundred meters above sea level in the Andes Mountains of Peru. It was abandoned during the Spanish conquest and remained hidden for centuries, until it was brought to international attention by explorer Hiram Bingham in nineteen eleven. Known for its ingenious dry stone construction and breathtaking setting, it is now a UNESCO World Heritage Site and one of the New Seven Wonders of the World.";
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = 'en-US';
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

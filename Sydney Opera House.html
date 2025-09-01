@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sydney Opera House AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.65);
+      padding: 16px;
+      border-radius: 12px;
+      max-width: 94%;
+    }
+    h1 {
+      color: #1e90ff; /* harbor/blue theme */
+      margin: 0;
+    }
+    .info {
+      padding: 14px;
+      background: #151515;
+      border-top: 2px solid #1e90ff;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #1e90ff;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover { background: #187bcd; }
+    ul { text-align: left; max-width: 720px; margin: 10px auto; padding-left: 18px; }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>🎶 Sydney Opera House, Sydney</h1>
+    <p>
+      The Sydney Opera House is an iconic performing-arts centre on Sydney Harbour, celebrated for its sail-like shell roofs and landmark status in Australia.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Key Facts</h2>
+    <ul>
+      <li>Designed by Danish architect Jørn Utzon — design selected in an international competition in 1957.</li>
+      <li>Construction began in 1959 and the building was officially opened on 20 October 1973 by Queen Elizabeth II.</li>
+      <li>Famous for its distinctive series of white sail-shaped shells forming the roof structure.</li>
+      <li>Houses multiple performance venues including the Concert Hall and the Joan Sutherland Theatre.</li>
+      <li>Designated a UNESCO World Heritage Site in 2007 and is one of the most photographed buildings in the world.</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => { camera.srcObject = stream; })
+        .catch(err => console.error("Camera access denied:", err));
+    } else {
+      console.error("getUserMedia not supported in this browser.");
+    }
+
+    // Voice narration
+    function speakInfo() {
+      const text = "The Sydney Opera House, designed by Danish architect Jorn Utzon and opened in October 1973, sits on Sydney Harbour and is famed for its white sail shaped shells. It contains multiple performance venues, including a major concert hall, and was inscribed as a UNESCO World Heritage Site in 2007. The building is one of Australia's most recognizable landmarks and a global symbol of architecture and the performing arts.";
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = 'en-GB';
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brihadeeswarar Temple AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      padding: 15px;
+      border-radius: 12px;
+      max-width: 90%;
+    }
+    h1 {
+      color: #ffcc00; /* Golden theme */
+      margin: 0;
+    }
+    .info {
+      padding: 15px;
+      background: #1c1c1c;
+      border-top: 2px solid #ffcc00;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #ffcc00;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e6b800;
+    }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>🛕 Brihadeeswarar Temple, Thanjavur</h1>
+    <p>
+      The Brihadeeswarar Temple, also known as the Big Temple, was built in the 11th century by Raja Raja Chola I. 
+      It is dedicated to Lord Shiva and is a UNESCO World Heritage Site.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Historical Facts</h2>
+    <ul style="text-align:left; max-width:600px; margin:auto;">
+      <li>Built in 1010 CE by Chola emperor Raja Raja Chola I.</li>
+      <li>Dedicated to Lord Shiva, known as Brihadeeswara.</li>
+      <li>One of the largest temples in India, made entirely of granite.</li>
+      <li>The temple tower (Vimana) rises to 66 meters, among the tallest in the world.</li>
+      <li>Part of the UNESCO World Heritage "Great Living Chola Temples."</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { camera.srcObject = stream; })
+      .catch(err => console.error("Camera access denied:", err));
+
+    // Voice narration
+    function speakInfo() {
+      const msg = new SpeechSynthesisUtterance(
+        "The Brihadeeswarar Temple in Thanjavur, also called the Big Temple, was built in the year 1010 by Raja Raja Chola the First. Dedicated to Lord Shiva, it is one of the largest temples in India, constructed entirely from granite. Its towering vimana rises to sixty six meters, making it one of the tallest in the world. Recognized as a UNESCO World Heritage Site, it stands as a masterpiece of Chola architecture."
+      );
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = 'en-US';
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

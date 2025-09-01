@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eiffel Tower AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.65);
+      padding: 15px;
+      border-radius: 12px;
+      max-width: 90%;
+    }
+    h1 {
+      color: #FFD700; /* Golden glow for Paris lights */
+      margin: 0;
+    }
+    .info {
+      padding: 15px;
+      background: #1c1c1c;
+      border-top: 2px solid #FFD700;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #FFD700;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e6c200;
+    }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>🗼 Eiffel Tower, Paris</h1>
+    <p>
+      The Eiffel Tower, a global cultural icon of France, is one of the most visited monuments in the world. 
+      Standing tall in Paris, it shines brilliantly every night with its light show.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Historical Facts</h2>
+    <ul style="text-align:left; max-width:600px; margin:auto;">
+      <li>Constructed between 1887 and 1889 by engineer Gustave Eiffel.</li>
+      <li>Built for the 1889 Exposition Universelle (World's Fair) in Paris.</li>
+      <li>Stands at 330 meters tall with antennas.</li>
+      <li>Was initially criticized, but later became France’s most famous landmark.</li>
+      <li>Visited by over 7 million people every year.</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { camera.srcObject = stream; })
+      .catch(err => console.error("Camera access denied:", err));
+
+    // Voice narration
+    function speakInfo() {
+      const msg = new SpeechSynthesisUtterance(
+        "The Eiffel Tower, built by Gustave Eiffel between 1887 and 1889, was constructed for the Paris World's Fair of 1889. Standing at three hundred and thirty meters, it was once the tallest structure in the world. Initially criticized by artists, it later became the most beloved symbol of France. Today, it attracts more than seven million visitors every year and lights up beautifully at night."
+      );
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = 'en-GB';
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

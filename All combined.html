@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>World Monuments AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.65);
+      padding: 16px;
+      border-radius: 12px;
+      max-width: 94%;
+    }
+    h1 {
+      margin: 0;
+    }
+    .info {
+      padding: 14px;
+      background: #151515;
+      border-top: 2px solid #444;
+    }
+    select, button {
+      margin: 8px;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    select { background: #222; color: #fff; }
+    button {
+      background: #f5f5f5; 
+      color: #000; 
+      cursor: pointer;
+    }
+    button:hover { background: #ddd; }
+    ul { text-align: left; max-width: 760px; margin: 10px auto; padding-left: 18px; }
+    .note { font-size: 13px; color: #bbb; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1 id="title">🏛️ Tourism AR Guide</h1>
+    <p id="description">Select a monument to explore history, facts, and audio narration.</p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Choose a Monument</h2>
+    <select id="monumentSelect" onchange="loadMonument()">
+      <option value="">-- Select --</option>
+      <option value="tajmahal">Taj Mahal (India)</option>
+      <option value="redfort">Red Fort (Delhi, India)</option>
+      <option value="gateway">Gateway of India (Mumbai)</option>
+      <option value="indiagate">India Gate (Delhi)</option>
+      <option value="charminar">Charminar (Hyderabad)</option>
+      <option value="hawamahal">Hawa Mahal (Jaipur)</option>
+      <option value="mysore">Mysore Palace</option>
+      <option value="suntemple">Sun Temple (Konark)</option>
+      <option value="sanchi">Sanchi Stupa</option>
+      <option value="brihadeeswarar">Brihadeeswarar Temple</option>
+      <option value="ajanta">Ajanta & Ellora Caves</option>
+      <option value="meenakshi">Meenakshi Amman Temple</option>
+      <option value="golden">Golden Temple (Amritsar)</option>
+      <option value="lotus">Lotus Temple (Delhi)</option>
+      <option value="eiffel">Eiffel Tower (Paris)</option>
+      <option value="greatwall">Great Wall of China</option>
+      <option value="statue">Statue of Liberty (USA)</option>
+      <option value="machu">Machu Picchu (Peru)</option>
+      <option value="petra">Petra (Jordan)</option>
+      <option value="christ">Christ the Redeemer (Brazil)</option>
+      <option value="pyramids">Pyramids of Giza & Sphinx (Egypt)</option>
+      <option value="sydney">Sydney Opera House (Australia)</option>
+      <option value="bigben">Big Ben / Elizabeth Tower (London)</option>
+      <option value="angkor">Angkor Wat (Cambodia)</option>
+      <option value="acropolis">Acropolis of Athens (Greece)</option>
+      <option value="rushmore">Mount Rushmore (USA)</option>
+      <option value="pisa">Leaning Tower of Pisa (Italy)</option>
+      <option value="burj">Burj Khalifa (Dubai)</option>
+    </select>
+    <h2 id="factsTitle"></h2>
+    <ul id="facts"></ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+    <div class="note">Prototype only. Real AR uses WebXR/ARKit/ARCore.</div>
+  </div>
+
+  <script>
+    // Monument database
+    const monuments = {
+      tajmahal: {
+        title: "🏛️ Taj Mahal, Agra",
+        desc: "A UNESCO World Heritage site, symbol of eternal love built by Mughal emperor Shah Jahan.",
+        facts: [
+          "Location: Agra, India.",
+          "Built: 1632–1648 CE.",
+          "Material: White marble.",
+          "Recognized as one of the New Seven Wonders of the World."
+        ]
+      },
+      redfort: {
+        title: "🏯 Red Fort, Delhi",
+        desc: "Historic Mughal fort built by Shah Jahan, centerpiece of India's Independence Day.",
+        facts: [
+          "Built: 1638–1648 CE.",
+          "Made of red sandstone.",
+          "UNESCO World Heritage site."
+        ]
+      },
+      gateway: {
+        title: "⛩️ Gateway of India, Mumbai",
+        desc: "An arch monument built during the 20th century to commemorate the visit of King George V.",
+        facts: [
+          "Built: 1924.",
+          "Location: Mumbai waterfront.",
+          "Height: 26 meters."
+        ]
+      },
+      indiagate: {
+        title: "🏞️ India Gate, Delhi",
+        desc: "War memorial dedicated to 84,000 soldiers of the British Indian Army.",
+        facts: [
+          "Designed by Sir Edwin Lutyens.",
+          "Height: 42 meters.",
+          "Inscriptions honor Indian soldiers of WWI."
+        ]
+      },
+      charminar: {
+        title: "🏰 Charminar, Hyderabad",
+        desc: "Historic mosque and landmark with four grand minarets.",
+        facts: [
+          "Built: 1591 CE.",
+          "Located in Hyderabad, India.",
+          "Height: 56 meters."
+        ]
+      },
+      hawamahal: {
+        title: "🏯 Hawa Mahal, Jaipur",
+        desc: "The 'Palace of Winds', built for royal women to view city life.",
+        facts: [
+          "Built: 1799.",
+          "Made of red and pink sandstone.",
+          "953 small windows called jharokhas."
+        ]
+      },
+      mysore: {
+        title: "🏰 Mysore Palace",
+        desc: "Historical royal residence of the Wadiyar dynasty.",
+        facts: [
+          "Located in Mysore, Karnataka.",
+          "Rebuilt in 1912.",
+          "Known for Dussehra festival celebrations."
+        ]
+      },
+      suntemple: {
+        title: "🌞 Sun Temple, Konark",
+        desc: "Magnificent 13th-century temple dedicated to the Sun God.",
+        facts: [
+          "Built in 1250 CE.",
+          "Designed as a giant stone chariot.",
+          "UNESCO World Heritage site."
+        ]
+      },
+      sanchi: {
+        title: "🛕 Sanchi Stupa",
+        desc: "Buddhist complex famous for Great Stupa built by Ashoka.",
+        facts: [
+          "Built: 3rd century BCE.",
+          "Located in Madhya Pradesh.",
+          "UNESCO World Heritage site."
+        ]
+      },
+      brihadeeswarar: {
+        title: "🛕 Brihadeeswarar Temple",
+        desc: "Dravidian architecture masterpiece built by Raja Raja Chola I.",
+        facts: [
+          "Built: 1010 CE.",
+          "Located in Thanjavur, Tamil Nadu.",
+          "UNESCO World Heritage site."
+        ]
+      },
+      ajanta: {
+        title: "⛰️ Ajanta & Ellora Caves",
+        desc: "Rock-cut caves famous for paintings and sculptures.",
+        facts: [
+          "Dating: 2nd century BCE–10th century CE.",
+          "Located in Maharashtra, India.",
+          "UNESCO World Heritage site."
+        ]
+      },
+      meenakshi: {
+        title: "🛕 Meenakshi Amman Temple",
+        desc: "Historic temple dedicated to Goddess Meenakshi.",
+        facts: [
+          "Located in Madurai, Tamil Nadu.",
+          "Famous for gopurams (gateway towers).",
+          "Built during Nayak dynasty."
+        ]
+      },
+      golden: {
+        title: "🏯 Golden Temple (Harmandir Sahib)",
+        desc: "Spiritual center of Sikhism located in Amritsar.",
+        facts: [
+          "Built in 1589 CE.",
+          "Also known as Harmandir Sahib.",
+          "Famous for golden-covered sanctum."
+        ]
+      },
+      lotus: {
+        title: "🌸 Lotus Temple, Delhi",
+        desc: "Baháʼí House of Worship shaped like a lotus flower.",
+        facts: [
+          "Completed in 1986.",
+          "Made of white marble.",
+          "Open to all religions."
+        ]
+      },
+      eiffel: {
+        title: "🗼 Eiffel Tower, Paris",
+        desc: "Iconic iron lattice tower built for 1889 World’s Fair.",
+        facts: [
+          "Height: 330 meters.",
+          "Designed by Gustave Eiffel.",
+          "Visited by 7M+ people yearly."
+        ]
+      },
+      greatwall: {
+        title: "🧱 Great Wall of China",
+        desc: "Series of fortifications across northern China.",
+        facts: [
+          "Length: 21,196 km.",
+          "Built between 7th century BCE–16th century CE.",
+          "UNESCO World Heritage site."
+        ]
+      },
+      statue: {
+        title: "🗽 Statue of Liberty, USA",
+        desc: "Gift from France symbolizing freedom.",
+        facts: [
+          "Dedicated in 1886.",
+          "Height: 93 meters.",
+          "Located in New York Harbor."
+        ]
+      },
+      machu: {
+        title: "⛰️ Machu Picchu, Peru",
+        desc: "Incan citadel set high in the Andes Mountains.",
+        facts: [
+          "Built: 15th century.",
+          "Rediscovered in 1911.",
+          "UNESCO World Heritage site."
+        ]
+      },
+      petra: {
+        title: "🏜️ Petra, Jordan",
+        desc: "Ancient Nabataean city carved into rock.",
+        facts: [
+          "Known as the Rose City.",
+          "Built around 5th century BCE.",
+          "UNESCO World Heritage site."
+        ]
+      },
+      christ: {
+        title: "✝️ Christ the Redeemer, Brazil",
+        desc: "Iconic statue overlooking Rio de Janeiro.",
+        facts: [
+          "Height: 30 meters.",
+          "Completed in 1931.",
+          "One of the New Seven Wonders."
+        ]
+      },
+      pyramids: {
+        title: "🏜️ Pyramids of Giza & Sphinx, Egypt",
+        desc: "Ancient wonders built as tombs for Pharaohs.",
+        facts: [
+          "Built around 2600 BCE.",
+          "Located in Giza, Egypt.",
+          "Great Pyramid is only surviving Ancient Wonder."
+        ]
+      },
+      sydney: {
+        title: "🎶 Sydney Opera House, Australia",
+        desc: "Architectural marvel on Sydney Harbour.",
+        facts: [
+          "Opened in 1973.",
+          "Designed by Jørn Utzon.",
+          "UNESCO World Heritage site."
+        ]
+      },
+      bigben: {
+        title: "🕰️ Big Ben (Elizabeth Tower), London",
+        desc: "Iconic clock tower at Westminster Palace.",
+        facts: [
+          "Completed in 1859.",
+          "Height: 96 meters.",
+          "Big Ben refers to the Great Bell."
+        ]
+      },
+      angkor: {
+        title: "🛕 Angkor Wat, Cambodia",
+        desc: "Largest religious monument in the world.",
+        facts: [
+          "Built in 12th century.",
+          "Originally Hindu, later Buddhist.",
+          "UNESCO World Heritage site."
+        ]
+      },
+      acropolis: {
+        title: "🏛️ Acropolis of Athens (Parthenon)",
+        desc: "Ancient citadel and symbol of classical Greece.",
+        facts: [
+          "Built in 5th century BCE.",
+          "Dedicated to Goddess Athena.",
+          "UNESCO World Heritage site."
+        ]
+      },
+      rushmore: {
+        title: "🗿 Mount Rushmore, USA",
+        desc: "Sculpture of four U.S. presidents carved into granite.",
+        facts: [
+          "Completed in 1941.",
+          "Located in South Dakota.",
+          "Presidents: Washington, Jefferson, Roosevelt, Lincoln."
+        ]
+      },
+      pisa: {
+        title: "🏰 Leaning Tower of Pisa, Italy",
+        desc: "Famous bell tower with unintended tilt.",
+        facts: [
+          "Built between 1173–1372.",
+          "Height: 56 meters.",
+          "Tilt: about 4 degrees."
+        ]
+      },
+      burj: {
+        title: "🏙️ Burj Khalifa, Dubai",
+        desc: "Tallest man-made structure in the world.",
+        facts: [
+          "Height: 828 meters.",
+          "Opened: 2010.",
+          "Designed by Adrian Smith (SOM)."
+        ]
+      }
+    };
+
+    // Camera
+    const camera = document.getElementById('camera');
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => { camera.srcObject = stream; })
+        .catch(err => console.error("Camera denied:", err));
+    }
+
+    // Load Monument
+    function loadMonument() {
+      const sel = document.getElementById('monumentSelect').value;
+      if (!sel) return;
+      const mon = monuments[sel];
+      document.getElementById('title').innerText = mon.title;
+      document.getElementById('description').innerText = mon.desc;
+      document.getElementById('factsTitle').innerText = "Key Facts";
+      document.getElementById('facts').innerHTML = mon.facts.map(f => `<li>${f}</li>`).join('');
+    }
+
+    // Narration
+    function speakInfo() {
+      const desc = document.getElementById('description').innerText;
+      const facts = [...document.getElementById('facts').children].map(li => li.innerText).join('. ');
+      const text = desc + ". " + facts;
+      if (text.trim() === "") return;
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.rate = 1;
+      msg.lang = 'en-US';
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Charminar AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      padding: 15px;
+      border-radius: 12px;
+      max-width: 90%;
+    }
+    h1 {
+      color: #66ffcc;
+      margin: 0;
+    }
+    .info {
+      padding: 15px;
+      background: #1c1c1c;
+      border-top: 2px solid #66ffcc;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #66ffcc;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #33ffbb;
+    }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>🏛 Charminar, Hyderabad</h1>
+    <p>
+      The Charminar, built in 1591 by Muhammad Quli Qutb Shah, is one of Hyderabad’s most iconic landmarks. 
+      Its four grand minarets symbolize the city’s rich history and architectural brilliance.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Historical Facts</h2>
+    <ul style="text-align:left; max-width:600px; margin:auto;">
+      <li>Constructed in 1591 by Sultan Muhammad Quli Qutb Shah.</li>
+      <li>Built to commemorate the end of a plague in Hyderabad.</li>
+      <li>Each of its four minarets is about 56 meters high.</li>
+      <li>Located at the heart of Hyderabad, near Laad Bazaar and Makkah Masjid.</li>
+      <li>A blend of Indo-Islamic architecture with Persian influences.</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { camera.srcObject = stream; })
+      .catch(err => console.error("Camera access denied:", err));
+
+    // Voice narration
+    function speakInfo() {
+      const msg = new SpeechSynthesisUtterance(
+        "The Charminar in Hyderabad was built in 1591 by Sultan Muhammad Quli Qutb Shah to mark the end of a deadly plague. It has four minarets, each fifty six meters tall, and is a masterpiece of Indo Islamic architecture with Persian influences."
+      );
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = "en-US";
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

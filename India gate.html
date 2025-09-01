@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>India Gate AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      padding: 15px;
+      border-radius: 12px;
+      max-width: 90%;
+    }
+    h1 {
+      color: #ff9933; /* saffron */
+      margin: 0;
+    }
+    .info {
+      padding: 15px;
+      background: #1c1c1c;
+      border-top: 2px solid #ff9933;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #ff9933;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ff751a;
+    }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>🇮🇳 India Gate, New Delhi</h1>
+    <p>
+      The India Gate, inaugurated in 1931, is a war memorial dedicated to the 70,000 Indian soldiers who lost their lives during World War I.
+      Designed by Sir Edwin Lutyens, it stands proudly on Rajpath in New Delhi.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Historical Facts</h2>
+    <ul style="text-align:left; max-width:600px; margin:auto;">
+      <li>Foundation stone laid in 1921, completed in 1931.</li>
+      <li>Designed by British architect Sir Edwin Lutyens.</li>
+      <li>Names of over 13,000 soldiers inscribed on its walls.</li>
+      <li>Amar Jawan Jyoti was added in 1972 after the Indo-Pak war.</li>
+      <li>A symbol of sacrifice and national pride.</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { camera.srcObject = stream; })
+      .catch(err => console.error("Camera access denied:", err));
+
+    // Voice narration
+    function speakInfo() {
+      const msg = new SpeechSynthesisUtterance(
+        "The India Gate in New Delhi, inaugurated in 1931, is a war memorial dedicated to seventy thousand Indian soldiers who died in World War One. Designed by Sir Edwin Lutyens, it also houses the Amar Jawan Jyoti, the eternal flame of the unknown soldier."
+      );
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = "en-US";
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hawa Mahal AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      padding: 15px;
+      border-radius: 12px;
+      max-width: 90%;
+    }
+    h1 {
+      color: #ff66b2; /* Pink theme */
+      margin: 0;
+    }
+    .info {
+      padding: 15px;
+      background: #1c1c1c;
+      border-top: 2px solid #ff66b2;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #ff66b2;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ff3385;
+    }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>🌸 Hawa Mahal, Jaipur</h1>
+    <p>
+      The Hawa Mahal, or "Palace of Winds," was built in 1799 by Maharaja Sawai Pratap Singh. 
+      Famous for its pink sandstone façade, it allowed royal women to observe street festivals without being seen.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Historical Facts</h2>
+    <ul style="text-align:left; max-width:600px; margin:auto;">
+      <li>Constructed in 1799 by Maharaja Sawai Pratap Singh.</li>
+      <li>Designed by Lal Chand Ustad in Rajput architecture with Mughal influences.</li>
+      <li>Its façade has 953 small windows called "jharokhas".</li>
+      <li>Nicknamed the "Palace of Winds".</li>
+      <li>Part of Jaipur’s UNESCO World Heritage status as a "Pink City".</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { camera.srcObject = stream; })
+      .catch(err => console.error("Camera access denied:", err));
+
+    // Voice narration
+    function speakInfo() {
+      const msg = new SpeechSynthesisUtterance(
+        "The Hawa Mahal, or Palace of Winds, was built in 1799 by Maharaja Sawai Pratap Singh. It has nine hundred and fifty three small windows, called jharokhas, designed for royal women to watch street life unseen. Its pink sandstone façade is an icon of Jaipur’s Pink City."
+      );
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = "en-US";
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

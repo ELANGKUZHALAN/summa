@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajanta & Ellora Caves AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      padding: 15px;
+      border-radius: 12px;
+      max-width: 90%;
+    }
+    h1 {
+      color: #ffa500; /* Orange-brown theme like cave walls */
+      margin: 0;
+    }
+    .info {
+      padding: 15px;
+      background: #1c1c1c;
+      border-top: 2px solid #ffa500;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #ffa500;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e59400;
+    }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>⛰️ Ajanta & Ellora Caves, Maharashtra</h1>
+    <p>
+      The Ajanta & Ellora Caves are world-famous rock-cut monuments showcasing Buddhist, Hindu, and Jain traditions. 
+      They are renowned for their paintings, sculptures, and architectural brilliance.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Historical Facts</h2>
+    <ul style="text-align:left; max-width:600px; margin:auto;">
+      <li>Ajanta Caves date from the 2nd century BCE to 6th century CE.</li>
+      <li>Ellora Caves were built between the 6th and 10th centuries CE.</li>
+      <li>Ajanta is famous for Buddhist murals and paintings.</li>
+      <li>Ellora features Hindu, Buddhist, and Jain temples, including the Kailasa Temple.</li>
+      <li>Both are UNESCO World Heritage Sites and symbols of India’s cultural unity.</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { camera.srcObject = stream; })
+      .catch(err => console.error("Camera access denied:", err));
+
+    // Voice narration
+    function speakInfo() {
+      const msg = new SpeechSynthesisUtterance(
+        "The Ajanta and Ellora Caves in Maharashtra are among the world's most remarkable rock cut monuments. The Ajanta caves, dating from the second century before Christ to the sixth century, are famous for their Buddhist murals and paintings. The Ellora caves, built between the sixth and tenth centuries, showcase Hindu, Buddhist, and Jain temples, including the magnificent Kailasa temple carved from a single rock. Both are UNESCO World Heritage Sites and symbolize the cultural harmony of India."
+      );
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = 'en-US';
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>

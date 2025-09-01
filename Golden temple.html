@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Golden Temple AR Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    #camera {
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      background: #111;
+    }
+    .overlay {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.65);
+      padding: 15px;
+      border-radius: 12px;
+      max-width: 90%;
+    }
+    h1 {
+      color: gold; /* Golden theme */
+      margin: 0;
+    }
+    .info {
+      padding: 15px;
+      background: #1c1c1c;
+      border-top: 2px solid gold;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: gold;
+      color: #000;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #d4af37;
+    }
+  </style>
+</head>
+<body>
+  <!-- Camera Preview -->
+  <video id="camera" autoplay playsinline></video>
+
+  <!-- AR Overlay -->
+  <div class="overlay">
+    <h1>✨ Golden Temple (Harmandir Sahib), Amritsar</h1>
+    <p>
+      The Golden Temple, also known as Harmandir Sahib, is the most sacred shrine of Sikhism. 
+      Surrounded by the Amrit Sarovar (holy tank), it symbolizes equality, peace, and spiritual devotion.
+    </p>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h2>Historical Facts</h2>
+    <ul style="text-align:left; max-width:600px; margin:auto;">
+      <li>Located in Amritsar, Punjab, founded by Guru Ram Das in the 16th century.</li>
+      <li>The upper floors of the temple are covered with pure gold leaf, hence the name Golden Temple.</li>
+      <li>The temple is surrounded by the Amrit Sarovar, a sacred pool believed to have healing powers.</li>
+      <li>The Guru Granth Sahib (holy scripture of Sikhs) is housed here.</li>
+      <li>Langar (free community kitchen) serves meals to over 50,000 people daily.</li>
+    </ul>
+    <button onclick="speakInfo()">🔊 Listen</button>
+  </div>
+
+  <script>
+    // Camera access
+    const camera = document.getElementById('camera');
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { camera.srcObject = stream; })
+      .catch(err => console.error("Camera access denied:", err));
+
+    // Voice narration
+    function speakInfo() {
+      const msg = new SpeechSynthesisUtterance(
+        "The Golden Temple, or Harmandir Sahib, in Amritsar, Punjab, is the holiest shrine of Sikhism. Founded by Guru Ram Das in the sixteenth century, it is famous for its golden dome and serene beauty. Surrounded by the sacred Amrit Sarovar, it symbolizes equality, peace, and devotion. The temple houses the Guru Granth Sahib and its Langar, or free community kitchen, serves meals to tens of thousands of people daily, regardless of caste, creed, or religion."
+      );
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.lang = 'en-IN';
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>
