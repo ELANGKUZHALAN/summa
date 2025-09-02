@@ -17,6 +17,7 @@
       height: 70vh;
       object-fit: cover;
       background: #111;
+      display: block;
     }
     .overlay {
       position: absolute;
@@ -52,8 +53,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Background Video -->
+  <video id="camera" autoplay muted loop playsinline>
+    <source src="greatwall.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -78,16 +82,6 @@
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => { camera.srcObject = stream; })
-        .catch(err => console.error("Camera access denied:", err));
-    } else {
-      console.error("getUserMedia not supported in this browser.");
-    }
-
     // Voice narration
     function speakInfo() {
       const text = `The Great Wall of China is not a single wall but a series of fortifications built over many centuries, with major work done during the Ming dynasty between the fourteenth and seventeenth centuries. Constructed from stone, brick and earth, it spans deserts and mountains and, when many sections are counted, measures over thirteen thousand miles, or around twenty one thousand kilometres. It served as defence, a signaling system and a symbol of China's engineering achievement.`;
