@@ -52,8 +52,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Monument Video -->
+  <video id="camera" autoplay muted loop playsinline>
+    <source src="angkorwat.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -78,16 +81,6 @@
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => { camera.srcObject = stream; })
-        .catch(err => console.error("Camera access denied:", err));
-    } else {
-      console.error("getUserMedia not supported in this browser.");
-    }
-
     // Voice narration
     function speakInfo() {
       const text = "Angkor Wat in Cambodia was built in the early twelfth century by King Suryavarman the Second as a Hindu temple dedicated to Vishnu and later became a major Buddhist site. It is the largest religious monument in the world, famed for its soaring central towers, long galleries of bas reliefs, and harmonious layout surrounded by a wide moat. Angkor Wat was declared a UNESCO World Heritage Site in nineteen ninety two and remains a national symbol of Cambodia.";
