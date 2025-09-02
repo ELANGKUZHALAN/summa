@@ -52,8 +52,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Background Video instead of Camera -->
+  <video id="camera" autoplay muted loop playsinline>
+    <source src="mount-rushmore.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -77,16 +80,6 @@
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => { camera.srcObject = stream; })
-        .catch(err => console.error("Camera access denied:", err));
-    } else {
-      console.error("getUserMedia not supported in this browser.");
-    }
-
     // Voice narration
     function speakInfo() {
       const text = "Mount Rushmore in South Dakota features the carved granite faces of George Washington, Thomas Jefferson, Theodore Roosevelt, and Abraham Lincoln. Sculpted primarily by Gutzon Borglum between nineteen twenty seven and nineteen forty one, each face is about sixty feet tall. The monument honors presidents who shaped the United States through founding, expansion, preservation and development, and is now managed by the National Park Service as a major cultural landmark.";
