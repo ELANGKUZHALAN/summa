@@ -17,6 +17,7 @@
       height: 70vh;
       object-fit: cover;
       background: #111;
+      display: block;
     }
     .overlay {
       position: absolute;
@@ -52,8 +53,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Background Video (instead of camera) -->
+  <video id="camera" autoplay playsinline muted loop>
+    <source src="statue-liberty.mp4" type="video/mp4" />
+    Your browser does not support HTML5 video.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -78,16 +82,6 @@
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => { camera.srcObject = stream; })
-        .catch(err => console.error("Camera access denied:", err));
-    } else {
-      console.error("getUserMedia not supported in this browser.");
-    }
-
     // Voice narration
     function speakInfo() {
       const text = "The Statue of Liberty in New York Harbor was gifted by France to the United States and dedicated on October twenty eighth, eighteen eighty six. Designed by sculptor Frederic Auguste Bartholdi with structural work by Gustave Eiffel, the statue is a symbol of freedom and welcome. The figure itself rises about forty six meters, and with its pedestal reaches around ninety three meters. It stands on Liberty Island near Ellis Island and was declared a UNESCO World Heritage Site in nineteen eighty four.";
