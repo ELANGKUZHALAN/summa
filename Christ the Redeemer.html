@@ -29,7 +29,7 @@
       max-width: 94%;
     }
     h1 {
-      color: #f0f0f0; /* light stone / sky */
+      color: #f0f0f0;
       margin: 0;
     }
     .info {
@@ -52,8 +52,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Background Video -->
+  <video id="camera" autoplay playsinline muted loop>
+    <source src="christ_redeemer.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -79,16 +82,6 @@
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => { camera.srcObject = stream; })
-        .catch(err => console.error("Camera access denied:", err));
-    } else {
-      console.error("getUserMedia not supported in this browser.");
-    }
-
     // Voice narration
     function speakInfo() {
       const text = "Christ the Redeemer in Rio de Janeiro, completed and inaugurated on October twelfth, nineteen thirty one, stands on the peak of Corcovado mountain. The statue, roughly thirty metres tall with an eight-metre pedestal and an arm span of about twenty eight metres, was created by sculptor Paul Landowski with engineering by Heitor da Silva Costa; the face was sculpted by Gheorghe Leonida. Made of reinforced concrete and clad in soapstone, it is a global symbol of Brazil and a beloved cultural landmark.";
