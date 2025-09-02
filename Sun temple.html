@@ -31,6 +31,7 @@
     h1 {
       color: #ff9933; /* Sunset orange theme */
       margin: 0;
+      text-shadow: 0 0 8px #ff9933, 0 0 15px #e67e22;
     }
     .info {
       padding: 15px;
@@ -53,8 +54,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Monument Video instead of Camera -->
+  <video id="camera" autoplay muted loop playsinline>
+    <source src="sun-temple.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -76,15 +80,10 @@
       <li>Famous for its intricate carvings and Kalinga-style architecture.</li>
     </ul>
     <button onclick="speakInfo()">🔊 Listen</button>
+    <button onclick="stopSpeech()">⏹ Stop</button>
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => { camera.srcObject = stream; })
-      .catch(err => console.error("Camera access denied:", err));
-
     // Voice narration
     function speakInfo() {
       const msg = new SpeechSynthesisUtterance(
@@ -94,6 +93,10 @@
       msg.pitch = 1;
       msg.lang = "en-US";
       window.speechSynthesis.speak(msg);
+    }
+
+    function stopSpeech() {
+      window.speechSynthesis.cancel();
     }
   </script>
 </body>
