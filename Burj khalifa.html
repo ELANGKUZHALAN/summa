@@ -53,8 +53,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Monument Video -->
+  <video id="camera" autoplay muted loop playsinline>
+    <source src="burjkhalifa.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -81,16 +84,6 @@
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => { camera.srcObject = stream; })
-        .catch(err => console.error("Camera access denied:", err));
-    } else {
-      console.error("getUserMedia not supported in this browser.");
-    }
-
     // Voice narration
     function speakInfo() {
       const text = "The Burj Khalifa in Dubai is the tallest man made structure on Earth, rising to eight hundred and twenty eight metres. Construction began in two thousand and four and it officially opened on January fourth, two thousand and ten. Designed by Adrian Smith of Skidmore Owings and Merrill with structural engineering by Bill Baker, the tower uses a bundled tube structural system inspired by regional Islamic architecture. It hosts residences, offices, hotels and observation decks such as 'At The Top' on levels one two four and one two five, and a premium deck on one four eight. The Burj Khalifa is known for its engineering innovation, high speed elevators and spectacular nighttime lighting and fountain displays at its base.";
