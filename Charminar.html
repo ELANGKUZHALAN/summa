@@ -11,8 +11,10 @@
       background: #000;
       color: #fff;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
-    #camera {
+    #background-video {
       width: 100%;
       height: 70vh;
       object-fit: cover;
@@ -31,11 +33,14 @@
     h1 {
       color: #66ffcc;
       margin: 0;
+      text-shadow: 0 0 8px #33ffbb;
     }
     .info {
       padding: 15px;
       background: #1c1c1c;
       border-top: 2px solid #66ffcc;
+      position: relative;
+      z-index: 2;
     }
     button {
       margin-top: 10px;
@@ -46,6 +51,7 @@
       font-size: 16px;
       border-radius: 8px;
       cursor: pointer;
+      box-shadow: 0 0 10px #33ffbb;
     }
     button:hover {
       background: #33ffbb;
@@ -53,8 +59,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Background Video -->
+  <video id="background-video" autoplay loop muted playsinline>
+    <source src="charminar.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -76,15 +85,10 @@
       <li>A blend of Indo-Islamic architecture with Persian influences.</li>
     </ul>
     <button onclick="speakInfo()">🔊 Listen</button>
+    <button onclick="stopSpeech()">⏹ Stop</button>
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => { camera.srcObject = stream; })
-      .catch(err => console.error("Camera access denied:", err));
-
     // Voice narration
     function speakInfo() {
       const msg = new SpeechSynthesisUtterance(
@@ -94,6 +98,10 @@
       msg.pitch = 1;
       msg.lang = "en-US";
       window.speechSynthesis.speak(msg);
+    }
+
+    function stopSpeech() {
+      window.speechSynthesis.cancel();
     }
   </script>
 </body>
