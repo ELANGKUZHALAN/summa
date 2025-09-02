@@ -52,8 +52,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Monument Video -->
+  <video id="camera" autoplay muted loop playsinline>
+    <source src="bigben.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -79,16 +82,6 @@
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => { camera.srcObject = stream; })
-        .catch(err => console.error("Camera access denied:", err));
-    } else {
-      console.error("getUserMedia not supported in this browser.");
-    }
-
     // Voice narration
     function speakInfo() {
       const text = "Big Ben is the popular name for the Great Bell of the clock at the north end of the Palace of Westminster; the tower itself was renamed Elizabeth Tower in two thousand and twelve. Completed in eighteen fifty nine and rising to about ninety six metres, the tower contains four clock faces each around seven metres across. The bell famously cracked soon after it was first installed and was repaired; its chime has become a symbol of London. The tower was built in the Gothic Revival style as part of the nineteenth century rebuilding of the Palace of Westminster.";
