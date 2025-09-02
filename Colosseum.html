@@ -11,6 +11,7 @@
       background: #000;
       color: #fff;
       text-align: center;
+      overflow-x: hidden;
     }
     #camera {
       width: 100%;
@@ -31,6 +32,7 @@
     h1 {
       color: #ffdd00;
       margin: 0;
+      text-shadow: 0 0 10px #ffdd00, 0 0 20px #ffaa00;
     }
     .info {
       padding: 15px;
@@ -53,8 +55,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Background Monument Video -->
+  <video id="camera" autoplay muted loop playsinline>
+    <source src="colosseum.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -71,24 +76,23 @@
       <li>Symbol of Rome’s architectural and engineering brilliance.</li>
     </ul>
     <button onclick="speakInfo()">🔊 Listen</button>
+    <button onclick="stopSpeech()">⏹ Stop</button>
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => { camera.srcObject = stream; })
-      .catch(err => console.error("Camera access denied:", err));
-
     // Voice narration
     function speakInfo() {
       const msg = new SpeechSynthesisUtterance(
         "The Colosseum, built in 80 A D, could hold up to fifty thousand spectators. It was used for gladiator battles and public events."
       );
-      msg.rate = 1; // speed
+      msg.rate = 1; 
       msg.pitch = 1;
       msg.lang = "en-US";
       window.speechSynthesis.speak(msg);
+    }
+
+    function stopSpeech() {
+      window.speechSynthesis.cancel();
     }
   </script>
 </body>
