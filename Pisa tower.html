@@ -53,8 +53,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Background Video instead of Camera -->
+  <video id="camera" autoplay playsinline muted loop>
+    <source src="pisa.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -80,16 +83,6 @@
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => { camera.srcObject = stream; })
-        .catch(err => console.error("Camera access denied:", err));
-    } else {
-      console.error("getUserMedia not supported in this browser.");
-    }
-
     // Voice narration
     function speakInfo() {
       const text = `The Leaning Tower of Pisa began construction in eleven seventy three as the freestanding bell tower for Pisa Cathedral. Built over many decades, the tower developed a pronounced tilt because of soft, unstable ground and a shallow foundation. Rising to about fifty six metres on its higher side, the tower has eight storeys including the bell chamber. Extensive stabilization work in recent decades reduced the lean and made the monument safe for visitors. The tower sits in the Piazza dei Miracoli and is a UNESCO World Heritage Site and an enduring symbol of medieval Italian architecture.`;
