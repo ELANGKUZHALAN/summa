@@ -52,8 +52,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Monument Video -->
+  <video id="camera" autoplay muted loop playsinline>
+    <source src="parthenon.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -78,16 +81,6 @@
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => { camera.srcObject = stream; })
-        .catch(err => console.error("Camera access denied:", err));
-    } else {
-      console.error("getUserMedia not supported in this browser.");
-    }
-
     // Voice narration
     function speakInfo() {
       const text = "The Parthenon on the Acropolis of Athens was constructed between about four hundred and forty seven and four hundred and thirty two before the Common Era during the leadership of Pericles. Designed by Ictinus and Callicrates with the sculptural programme led by Phidias, it was dedicated to Athena Parthenos, the city's patron goddess. The temple is celebrated for its Doric order, subtle proportional refinements and rich sculptures including metopes and a continuous frieze. Over centuries it has served as a church and mosque and suffered severe damage, notably in sixteen eighty seven; extensive restoration work continues to preserve this emblem of classical Greek civilisation.";
