@@ -52,8 +52,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Background Monument Video -->
+  <video id="camera" autoplay playsinline muted loop>
+    <source src="sydney-opera-house.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -77,16 +80,6 @@
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => { camera.srcObject = stream; })
-        .catch(err => console.error("Camera access denied:", err));
-    } else {
-      console.error("getUserMedia not supported in this browser.");
-    }
-
     // Voice narration
     function speakInfo() {
       const text = "The Sydney Opera House, designed by Danish architect Jorn Utzon and opened in October 1973, sits on Sydney Harbour and is famed for its white sail shaped shells. It contains multiple performance venues, including a major concert hall, and was inscribed as a UNESCO World Heritage Site in 2007. The building is one of Australia's most recognizable landmarks and a global symbol of architecture and the performing arts.";
