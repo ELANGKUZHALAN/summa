@@ -11,35 +11,61 @@
       background: #000;
       color: #fff;
       text-align: center;
+      overflow-x: hidden;
     }
+
+    /* Fullscreen background video */
     #camera {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: 70vh;
+      height: 100%;
       object-fit: cover;
+      z-index: -1; /* keeps video behind text */
       background: #111;
     }
+
+    /* Overlay for title and intro */
     .overlay {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
+      margin-top: 20px;
+      display: inline-block;
       background: rgba(0,0,0,0.6);
-      padding: 15px;
+      padding: 15px 20px;
       border-radius: 12px;
       max-width: 90%;
     }
+
     h1 {
       color: #ff9933; /* Sunset orange theme */
       margin: 0;
       text-shadow: 0 0 8px #ff9933, 0 0 15px #e67e22;
     }
+
+    /* Info section (semi-transparent block) */
     .info {
+      margin: 20px auto;
       padding: 15px;
-      background: #1c1c1c;
+      background: rgba(28,28,28,0.9);
       border-top: 2px solid #ff9933;
+      border-radius: 12px;
+      max-width: 800px;
     }
+
+    .info h2 {
+      margin-top: 0;
+      color: #ffb84d;
+    }
+
+    .info ul {
+      text-align: left;
+      max-width: 600px;
+      margin: auto;
+      line-height: 1.6;
+    }
+
     button {
-      margin-top: 10px;
+      margin: 10px 5px 0;
       padding: 10px 20px;
       border: none;
       background: #ff9933;
@@ -47,14 +73,21 @@
       font-size: 16px;
       border-radius: 8px;
       cursor: pointer;
+      transition: background 0.2s ease;
     }
+
     button:hover {
       background: #e67e22;
+    }
+
+    @media (max-width: 600px) {
+      .overlay { font-size: 0.9rem; padding: 12px; }
+      .info ul { font-size: 0.9rem; }
     }
   </style>
 </head>
 <body>
-  <!-- Monument Video instead of Camera -->
+  <!-- Monument Video as Background -->
   <video id="camera" autoplay muted loop playsinline>
     <source src="sun-temple.mp4" type="video/mp4">
     Your browser does not support the video tag.
@@ -72,7 +105,7 @@
   <!-- Info Section -->
   <div class="info">
     <h2>Historical Facts</h2>
-    <ul style="text-align:left; max-width:600px; margin:auto;">
+    <ul>
       <li>Constructed in the 13th century by King Narasimhadeva I of the Eastern Ganga dynasty.</li>
       <li>Designed as a colossal chariot with 24 carved stone wheels, pulled by 7 horses.</li>
       <li>Dedicated to Surya, the Sun God, symbolizing time and celestial movement.</li>
