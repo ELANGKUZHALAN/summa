@@ -11,32 +11,58 @@
       background: #000;
       color: #fff;
       text-align: center;
+      overflow-x: hidden;
     }
+
+    /* Fullscreen background video */
     #camera {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: 70vh;
+      height: 100%;
       object-fit: cover;
+      z-index: -1; /* keep video behind content */
       background: #111;
     }
+
+    /* Overlay text on video */
     .overlay {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
+      margin-top: 20px;
+      display: inline-block;
       background: rgba(0,0,0,0.6);
       padding: 15px;
       border-radius: 12px;
       max-width: 90%;
     }
+
     h1 {
-      color: #00e6ff;
+      color: #00e6ff; /* Aqua theme */
       margin: 0;
+      text-shadow: 0 0 8px #00e6ff, 0 0 15px #00bcd4;
     }
+
     .info {
+      margin: 20px auto;
       padding: 15px;
-      background: #1c1c1c;
+      background: rgba(28,28,28,0.9);
       border-top: 2px solid #00e6ff;
+      border-radius: 12px;
+      max-width: 800px;
     }
+
+    .info h2 {
+      margin-top: 0;
+      color: #66f2ff;
+    }
+
+    ul {
+      text-align: left;
+      max-width: 600px;
+      margin: auto;
+      line-height: 1.6;
+    }
+
     button {
       margin-top: 10px;
       padding: 10px 20px;
@@ -46,6 +72,7 @@
       font-size: 16px;
       border-radius: 8px;
       cursor: pointer;
+      transition: background 0.2s ease;
     }
     button:hover {
       background: #00bcd4;
@@ -53,8 +80,11 @@
   </style>
 </head>
 <body>
-  <!-- Camera Preview -->
-  <video id="camera" autoplay playsinline></video>
+  <!-- Background Video of Taj Mahal -->
+  <video id="camera" autoplay playsinline muted loop>
+    <source src="taj-mahal.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
   <!-- AR Overlay -->
   <div class="overlay">
@@ -68,22 +98,17 @@
   <!-- Info Section -->
   <div class="info">
     <h2>Historical Facts</h2>
-    <ul style="text-align:left; max-width:600px; margin:auto;">
+    <ul>
       <li>Commissioned in 1632 and completed in 1648.</li>
       <li>Built as a mausoleum for Mumtaz Mahal, wife of Shah Jahan.</li>
       <li>Recognized as a UNESCO World Heritage Site in 1983.</li>
       <li>Famous for its stunning white marble and symmetrical design.</li>
     </ul>
     <button onclick="speakInfo()">🔊 Listen</button>
+    <button onclick="stopSpeech()">⏹ Stop</button>
   </div>
 
   <script>
-    // Camera access
-    const camera = document.getElementById('camera');
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => { camera.srcObject = stream; })
-      .catch(err => console.error("Camera access denied:", err));
-
     // Voice narration
     function speakInfo() {
       const msg = new SpeechSynthesisUtterance(
@@ -93,6 +118,10 @@
       msg.pitch = 1;
       msg.lang = "en-US";
       window.speechSynthesis.speak(msg);
+    }
+
+    function stopSpeech() {
+      window.speechSynthesis.cancel();
     }
   </script>
 </body>
